@@ -51,9 +51,9 @@ const LargeButton = observer(
             <img src="/right.svg" />
           </Box>
           <Box direction="row" align="center">
-            <img className={styles.imgToken} src="/one.svg" />
+            <img className={styles.imgToken} src="/polygon-matic.jpg" />
             <Text size="large" className={styles.title}>
-              ONE
+              MATIC
             </Text>
           </Box>
         </Box>
@@ -115,7 +115,7 @@ export const EthBridge = observer((props: any) => {
         exchange.setToken(props.match.params.token);
 
         if (TOKEN.ETH === props.match.params.token) {
-          user.setHRC20Token(process.env.ETH_HRC20);
+          //user.setHRC20Token(process.env.ETH_HRC20);
           userMetamask.setTokenDetails({
             name: 'ETH',
             decimals: '18',
@@ -180,7 +180,7 @@ export const EthBridge = observer((props: any) => {
               <LargeButton
                 title="ONE -> ETH"
                 reverse={true}
-                description={user.isMetamask ? '(Metamask)' : '(ONE Wallet)'}
+                description='(Metamask)'
                 onClick={() => exchange.setMode(EXCHANGE_MODE.ONE_TO_ETH)}
                 isActive={exchange.mode === EXCHANGE_MODE.ONE_TO_ETH}
               />

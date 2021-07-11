@@ -66,12 +66,7 @@ export const ERC20Select = observer<{ type: TOKEN; options?: boolean }>(
             {labels[exchange.network][type]}
           </Text>
 
-          <Checkbox
-            disabled={erc20Select.isLoading}
-            label="use custom address"
-            value={!options || custom}
-            onChange={setCustom}
-          />
+
         </Box>
 
         {options && !custom ? (

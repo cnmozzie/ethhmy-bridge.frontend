@@ -111,7 +111,6 @@ export class EthMethodsERC20 {
   };
 
   lockToken = async (
-    erc20Address,
     userAddr,
     amount,
     decimals,
@@ -120,10 +119,10 @@ export class EthMethodsERC20 {
     // @ts-ignore
     const accounts = await ethereum.enable();
 
-    const hmyAddrHex = getAddress(userAddr).checksum;
+    //const hmyAddrHex = getAddress(userAddr).checksum;
 
     const estimateGas = await this.ethManagerContract.methods
-      .lockToken(erc20Address, mulDecimals(amount, decimals), hmyAddrHex)
+      .depositFor(mulDecimals(amount, decimals), userAddr)
       .estimateGas({ from: accounts[0] });
 
     const gasLimit = Math.max(
@@ -132,7 +131,7 @@ export class EthMethodsERC20 {
     );
 
     let transaction = await this.ethManagerContract.methods
-      .lockToken(erc20Address, mulDecimals(amount, decimals), hmyAddrHex)
+      .depositFor(mulDecimals(amount, decimals), userAddr)
       .send({
         from: accounts[0],
         gas: new BN(gasLimit),
@@ -221,6 +220,23 @@ export class EthMethodsERC20 {
     }
 
     return res;
+  };
+
+  totalWithdrawals = async () => {
+
+    let res;
+
+    try {
+      res = await this.ethManagerContract.methods
+      .withdrawId()
+      .call();
+    } catch (e) {
+      console.error(e);
+      debugger;
+    }
+
+    return res;
+
   };
 
   lockNative = async (userAddr, amount, sendTxCallback?) => {

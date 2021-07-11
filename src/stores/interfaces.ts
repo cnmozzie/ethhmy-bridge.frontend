@@ -119,7 +119,6 @@ export interface ITokenInfo {
   decimals: string;
   erc20Address: string;
   hrc20Address: string;
-  totalLocked: string;
   totalSupply: string;
   totalLockedNormal: string;
   totalLockedUSD: string;

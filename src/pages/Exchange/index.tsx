@@ -416,25 +416,6 @@ export class Exchange extends React.Component<
               </Box>
             )}
 
-            {exchange.network === NETWORK_TYPE.BINANCE &&
-              exchange.config.tokens.includes(TOKEN.HRC20) && (
-                <Box
-                  className={cn(
-                    styles.itemToken,
-                    exchange.token === TOKEN.HRC20 ? styles.selected : '',
-                  )}
-                  onClick={() => {
-                    user.resetTokens();
-
-                    exchange.setToken(TOKEN.HRC20);
-                    routing.push(`/${exchange.token}`);
-                  }}
-                >
-                  <img className={styles.imgToken} src="/one.svg" />
-                  <Text>HRC20</Text>
-                </Box>
-              )}
-
             {exchange.config.tokens.includes(TOKEN.ERC721) && (
               <Box
                 style={{ width: 140 }}
@@ -473,33 +454,9 @@ export class Exchange extends React.Component<
               </Box>
             )}
 
-            {exchange.config.tokens.includes(TOKEN.ONE) && (
-              <Box
-                className={cn(
-                  styles.itemToken,
-                  exchange.token === TOKEN.ONE ? styles.selected : '',
-                )}
-                onClick={() => {
-                  exchange.setToken(TOKEN.ONE);
-                  routing.push(`/${exchange.token}`);
-
-                  // user.setHRC20Mapping(process.env.ONE_HRC20, true);
-
-                  // user.setHRC20Token(process.env.ONE_HRC20);
-                  // userMetamask.setTokenDetails({
-                  //   name: 'Ethereum ONE',
-                  //   decimals: '18',
-                  //   erc20Address: '',
-                  //   symbol: 'ONE',
-                  // });
-                }}
-              >
-                <img className={styles.imgToken} src="/one.svg" />
-                <Text>ONE</Text>
-              </Box>
-            )}
           </Box>
         ) : null}
+
         <Form
           ref={ref => (this.formRef = ref)}
           data={this.props.exchange.transaction}
@@ -719,19 +676,20 @@ export class Exchange extends React.Component<
             </Box>
           ) : null}
 
-          {exchange.step.id === EXCHANGE_STEPS.APPROVE ? (
+          {exchange.step.id === EXCHANGE_STEPS.APPROVE ? ( // NO. 2 STEP
             <ApproveAmountField tokenInfo={this.tokenInfo} />
           ) : null}
         </Form>
+
 
         {this.addressValidationError ? (
           <Text color="red">{this.addressValidationError}</Text>
         ) : null}
 
-        {exchange.step.id === EXCHANGE_STEPS.CONFIRMATION ? (
+        {exchange.step.id === EXCHANGE_STEPS.CONFIRMATION ? ( // NO. 3 STEP
           <Details showTotal={true} />
         ) : null}
-        {exchange.step.id === EXCHANGE_STEPS.SENDING ? (
+        {exchange.step.id === EXCHANGE_STEPS.SENDING ? ( // NO. 4 STEP
           <Details>
             <Status />
           </Details>
@@ -743,7 +701,7 @@ export class Exchange extends React.Component<
           </Details>
         ) : null}
 
-        {exchange.step.id === EXCHANGE_STEPS.CONFIRMATION ? (
+        {exchange.step.id === EXCHANGE_STEPS.CONFIRMATION ? ( // NO. 3 STEP
           <>
             {exchange.mode === EXCHANGE_MODE.ETH_TO_ONE ? (
               <Box

@@ -21,8 +21,16 @@ export interface INetworkMethods {
   getEthBalance: (address: string) => Promise<string>;
 }
 
-const init = (config: TConfig): INetworkMethods => {
-  const web3 = new Web3(web3URL);
+const init = (config: TConfig, inject: any): INetworkMethods => {
+  
+  let web3;
+
+  if (inject) {
+    web3 = new Web3(web3URL);
+  }
+  else {
+    web3 = new Web3(config.nodeURL);
+  }
 
   const ethBUSDJson = require('../out/MyERC20.json');
   const ethBUSDContract = new web3.eth.Contract(
@@ -124,11 +132,12 @@ const init = (config: TConfig): INetworkMethods => {
   };
 };
 
-let ethNetwork: INetworkMethods, binanceNetwork: INetworkMethods;
+let ethNetwork: INetworkMethods, binanceNetwork: INetworkMethods, maticNetwork: INetworkMethods;
 
 export const initNetworks = (fullCinfig: TFullConfig) => {
-  ethNetwork = init(fullCinfig.ethClient);
-  binanceNetwork = init(fullCinfig.binanceClient);
+  ethNetwork = init(fullCinfig.ethClient, true);
+  binanceNetwork = init(fullCinfig.binanceClient, true);
+  maticNetwork = init(fullCinfig.hmyClient, false);
 };
 
 export const getExNetworkMethods = (): INetworkMethods => {
@@ -138,4 +147,8 @@ export const getExNetworkMethods = (): INetworkMethods => {
     case NETWORK_TYPE.BINANCE:
       return binanceNetwork;
   }
+};
+
+export const getMaticNetworkMethods = (): INetworkMethods => {
+  return maticNetwork;
 };

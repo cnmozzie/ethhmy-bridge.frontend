@@ -23,7 +23,7 @@ export interface IERC20Token {
   erc20Address: string;
 }
 
-export class UserStoreMetamask extends StoreConstructor {
+export class UserStoreMatic extends StoreConstructor {
   @observable public isAuthorized: boolean;
   @observable error: string = '';
 
@@ -93,20 +93,10 @@ export class UserStoreMetamask extends StoreConstructor {
 
     switch (process.env.NETWORK) {
       case 'testnet':
-        switch (this.stores.exchange.network) {
-          case NETWORK_TYPE.ETHEREUM:
-            return Number(this.metamaskChainId) === 42;
-          case NETWORK_TYPE.BINANCE:
-            return Number(this.metamaskChainId) === 97;
-        }
+        return Number(this.metamaskChainId) === 80001;
 
       case 'mainnet':
-        switch (this.stores.exchange.network) {
-          case NETWORK_TYPE.ETHEREUM:
-            return Number(this.metamaskChainId) === 1;
-          case NETWORK_TYPE.BINANCE:
-            return Number(this.metamaskChainId) === 56;
-        }
+        return Number(this.metamaskChainId) === 137;
     }
 
     return false;
@@ -247,8 +237,7 @@ export class UserStoreMetamask extends StoreConstructor {
 
           this.erc20Balance = divDecimals(
             erc20Balance,
-            18,
-            //this.erc20TokenDetails.decimals,
+            this.erc20TokenDetails.decimals,
           );
         }
 

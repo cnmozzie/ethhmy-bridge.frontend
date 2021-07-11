@@ -3,6 +3,7 @@ import { action, autorun, computed, observable, reaction } from 'mobx';
 import { NETWORK_TYPE, TOKEN } from './interfaces';
 import { tokensMainnet } from '../pages/Exchange/tokens';
 import { NETWORK_ICON } from './names';
+import { allTokenData } from './config';
 
 export class Erc20SelectStore extends StoreConstructor {
   @observable tokenAddress;
@@ -100,20 +101,9 @@ export class Erc20SelectStore extends StoreConstructor {
 
   @computed
   get tokensList() {
-    if (
-      this.stores.exchange.network === NETWORK_TYPE.ETHEREUM &&
-      process.env.NETWORK !== 'testnet'
-    ) {
-      return tokensMainnet;
-    }
-
-    return this.stores.tokens.allData
-      .filter(t =>
-        this.stores.exchange.network === NETWORK_TYPE.ETHEREUM
-          ? !['BUSD', 'LINK'].includes(t.symbol)
-          : true,
-      )
+    return allTokenData
       .filter(t => t.network === this.stores.exchange.network)
+      .filter(t => t.token === TOKEN.ERC20)
       .map(t => ({
         address: t.erc20Address,
         label: `${t.name} (${t.symbol})`,

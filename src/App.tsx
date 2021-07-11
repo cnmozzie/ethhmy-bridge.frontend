@@ -28,8 +28,8 @@ export const App: React.FC = () => (
         <Route exact path="/faq" component={FAQPage} />
         <Route exact path="/info" component={InfoPage} />
         <Route exact path="/explorer" component={Explorer} />
-        <Route exact path="/stuck-operations" component={StuckOperations} />} />
-        <Route exact path="/admin-explorer" component={AdminExplorer} />} />
+        <Route exact path="/stuck-operations" component={StuckOperations} />
+        <Route exact path="/admin-explorer" component={AdminExplorer} />
         <Route exact path="/:token" component={EthBridge} />
         <Route
           exact

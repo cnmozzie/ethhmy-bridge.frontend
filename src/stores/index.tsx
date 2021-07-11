@@ -1,6 +1,7 @@
 import RouterStore from 'stores/RouterStore';
 import { ActionModalsStore } from './ActionModalsStore';
 import { UserStoreEx } from './UserStore';
+import { UserStoreMatic } from './UserStoreMatic';
 import { UserStoreMetamask } from './UserStoreMetamask';
 import { Exchange } from './Exchange';
 import { Operations } from './Operations';
@@ -13,6 +14,7 @@ export interface IStores {
   routing?: RouterStore;
   actionModals?: ActionModalsStore;
   user?: UserStoreEx;
+  userMatic?: UserStoreMatic;
   userMetamask?: UserStoreMetamask;
   exchange?: Exchange;
   operations?: Operations;
@@ -30,6 +32,7 @@ stores.adminOperations = new AdminOperations(stores);
 stores.tokens = new Tokens(stores);
 stores.actionModals = new ActionModalsStore();
 stores.user = new UserStoreEx(stores);
+stores.userMatic = new UserStoreMatic(stores);
 stores.userMetamask = new UserStoreMetamask(stores);
 stores.erc20Select = new Erc20SelectStore(stores);
 
