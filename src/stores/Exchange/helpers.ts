@@ -1,6 +1,6 @@
 import { NETWORK_TYPE, TOKEN } from '../interfaces';
 import * as contract from '../../blockchain-bridge';
-import { getExNetworkMethods, getMaticNetworkMethods } from '../../blockchain-bridge';
+import { getBinanceNetworkMethods, getMaticNetworkMethods } from '../../blockchain-bridge';
 
 export const getContractMethods = (
   token: TOKEN,
@@ -9,10 +9,10 @@ export const getContractMethods = (
 ) => {
   let ethMethods, hmyMethods;
 
-  const exNetwork = getExNetworkMethods();
+  const exNetwork = getBinanceNetworkMethods();
   const maticNetwork = getMaticNetworkMethods();
 
-  ethMethods = exNetwork.ethMethodsERC20;
+  ethMethods = exNetwork.ethMethodsERC20; //cheat it
   hmyMethods = maticNetwork.ethMethodsERC20; //cheat it
 
   return { ethMethods, hmyMethods };

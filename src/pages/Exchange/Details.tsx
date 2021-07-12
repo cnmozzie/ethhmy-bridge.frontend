@@ -175,7 +175,7 @@ export const Details = observer<{ showTotal?: boolean; children?: any }>(
           address={true}
         />
         <AssetRow
-          label="ONE address"
+          label="MATIC address"
           value={truncateAddressString(exchange.transaction.oneAddress)}
           address={true}
         />

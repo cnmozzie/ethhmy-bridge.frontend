@@ -33,7 +33,7 @@ export interface ITokenInfo {
   maxAmount: string;
 }
 
-@inject('user', 'exchange', 'actionModals', 'userMetamask', 'routing', 'tokens')
+@inject('user', 'exchange', 'actionModals', 'userMatic', 'userMetamask', 'routing', 'tokens')
 @observer
 export class Exchange extends React.Component<
   Pick<IStores, 'user'> &
@@ -42,6 +42,7 @@ export class Exchange extends React.Component<
     Pick<IStores, 'tokens'> &
     Pick<IStores, 'actionModals'> &
     Pick<IStores, 'tokens'> &
+    Pick<IStores, 'userMatic'> &
     Pick<IStores, 'userMetamask'>
 > {
   formRef: MobxForm;
@@ -72,7 +73,7 @@ export class Exchange extends React.Component<
   }
 
   onClickHandler = async (needValidate: boolean, callback: () => void) => {
-    const { actionModals, user, userMetamask, exchange } = this.props;
+    const { actionModals, userMatic, userMetamask, exchange } = this.props;
     exchange.error = '';
 
     // return actionModals.open(
@@ -102,7 +103,7 @@ export class Exchange extends React.Component<
     //   },
     // );
 
-    if (!user.isAuthorized) {
+    /* if (!user.isAuthorized) {
       if (exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
         if (!user.isOneWallet) {
           return actionModals.open(() => <AuthWarning />, {
@@ -120,7 +121,7 @@ export class Exchange extends React.Component<
           await user.signIn();
         }
       }
-    }
+    } */
 
     if (
       !userMetamask.isAuthorized &&
@@ -132,6 +133,15 @@ export class Exchange extends React.Component<
     }
 
     if (
+      !userMatic.isAuthorized &&
+      exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
+    ) {
+      if (!userMatic.isAuthorized) {
+        await userMatic.signIn(true);
+      }
+    }
+
+/*     if (
       exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
       user.isMetamask &&
       !user.isNetworkActual
@@ -147,7 +157,7 @@ export class Exchange extends React.Component<
           return Promise.resolve();
         },
       });
-    }
+    } */
 
     if ([TOKEN.ERC721].includes(exchange.token) && !userMetamask.erc20Address) {
       exchange.error = 'No token selected ';
@@ -155,14 +165,14 @@ export class Exchange extends React.Component<
     }
 
     if (needValidate) {
-      if (exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
-        const methods = getExNetworkMethods();
+      // if (exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+      //   const methods = getExNetworkMethods();
 
-        if (!methods.web3.utils.isAddress(exchange.transaction.ethAddress)) {
-          this.addressValidationError = 'Invalid wallet Hex address';
-          return;
-        }
-      }
+      //   if (!methods.web3.utils.isAddress(exchange.transaction.ethAddress)) {
+      //     this.addressValidationError = 'Invalid wallet Hex address';
+      //     return;
+      //   }
+      // }
 
       if (
         this.props.tokens.allData.some(
@@ -192,7 +202,7 @@ export class Exchange extends React.Component<
 
   @computed
   get tokenInfo(): ITokenInfo {
-    const { user, exchange, userMetamask } = this.props;
+    const { user, exchange, userMatic, userMetamask } = this.props;
 
     switch (exchange.token) {
       case TOKEN.BUSD:
@@ -221,9 +231,9 @@ export class Exchange extends React.Component<
 
         return {
           label: userMetamask.erc20TokenDetails.symbol,
-          maxAmount:
+          maxAmount: 
             exchange.mode === EXCHANGE_MODE.ONE_TO_ETH
-              ? user.hrc20Balance
+              ? userMatic.erc20Balance
               : userMetamask.erc20Balance,
         };
 
@@ -257,7 +267,7 @@ export class Exchange extends React.Component<
   }
 
   render() {
-    const { exchange, routing, user, userMetamask } = this.props;
+    const { exchange, routing, user, userMatic, userMetamask } = this.props;
 
     let icon = () => <Icon style={{ width: 50 }} glyph="RightArrow" />;
     let description = 'Approval';
@@ -567,7 +577,7 @@ export class Exchange extends React.Component<
                         fontWeight: 'bold',
                       }}
                     >
-                      {`${NETWORK_BASE_TOKEN[exchange.network]} address`}
+                      {`Wallet Address`}
                     </Text>
                     <Text color="#9698a7" size="small">
                       only use your wallet address, never use contract address
@@ -596,7 +606,7 @@ export class Exchange extends React.Component<
                     >
                       Use my address
                     </Box>
-                  ) : user.isAuthorized && user.sessionType === 'metamask' ? (
+                  ) : userMatic.isAuthorized ? (
                     <Box
                       fill={true}
                       style={{
@@ -604,11 +614,12 @@ export class Exchange extends React.Component<
                         textAlign: 'right',
                       }}
                       onClick={() => {
-                        exchange.transaction.ethAddress = user.address;
+                        exchange.transaction.ethAddress =
+                          userMatic.ethAddress;
                         this.addressValidationError = '';
                       }}
                     >
-                      Use Metamask address
+                      Use my address
                     </Box>
                   ) : null}
                 </Box>
@@ -626,7 +637,7 @@ export class Exchange extends React.Component<
                         fontWeight: 'bold',
                       }}
                     >
-                      ONE Address
+                      Wallet Address
                     </Text>
                     <Text color="#9698a7" size="small">
                       only use your wallet address, never use contract address
@@ -735,6 +746,7 @@ export class Exchange extends React.Component<
         {this.metamaskNetworkError ? (
           <Box>{this.metamaskNetworkError}</Box>
         ) : null}
+
         <Box
           direction="row"
           margin={{ top: 'large' }}
@@ -759,6 +771,7 @@ export class Exchange extends React.Component<
             ))
           )}
         </Box>
+        
       </Box>
     );
   }

@@ -1,6 +1,6 @@
 import { StoreConstructor } from './core/StoreConstructor';
 import { action, autorun, computed, observable, reaction } from 'mobx';
-import { NETWORK_TYPE, TOKEN } from './interfaces';
+import { EXCHANGE_MODE, TOKEN } from './interfaces';
 import { tokensMainnet } from '../pages/Exchange/tokens';
 import { NETWORK_ICON } from './names';
 import { allTokenData } from './config';
@@ -105,7 +105,7 @@ export class Erc20SelectStore extends StoreConstructor {
       .filter(t => t.network === this.stores.exchange.network)
       .filter(t => t.token === TOKEN.ERC20)
       .map(t => ({
-        address: t.erc20Address,
+        address: this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE? t.erc20Address: t.hrc20Address, // may change this later?
         label: `${t.name} (${t.symbol})`,
         image: NETWORK_ICON[t.network],
       }));

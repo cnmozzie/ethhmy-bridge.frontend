@@ -107,7 +107,7 @@ const binanceClient: TConfig = {
     symbol: "lowb",
     decimals: "18",
     erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
-    hrc20Address: "0x2f5f587f9Ef87B958402Ac3E758C3109fA6e1429",
+    hrc20Address: "0x5cd4d2f947ae4568a8bd0905dbf12d3454d197f3",
     token: TOKEN.ERC20,
     network: NETWORK_TYPE.BINANCE,
     totalSupply: "1716082368000000000204",

@@ -267,6 +267,7 @@ export class UserStoreMetamask extends StoreConstructor {
         console.error(e);
       }
     }
+    
   };
 
   @action.bound public setToken = async (erc20Address: string) => {
@@ -295,11 +296,11 @@ export class UserStoreMetamask extends StoreConstructor {
 
     if (
       this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
-      ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
-        !this.stores.user.isAuthorized)
+      ((this.stores.userMatic.isMetaMask && !this.stores.userMatic.isNetworkActual) ||
+        !this.stores.userMatic.isAuthorized)
     ) {
       throw new Error(
-        `Your MetaMask in on the wrong network. Please switch on Harmony ${process.env.NETWORK} and try again!`,
+        `Your MetaMask in on the wrong network. Please switch on Matic ${process.env.NETWORK} and try again!`,
       );
     }
 
@@ -327,6 +328,7 @@ export class UserStoreMetamask extends StoreConstructor {
     }
 
     this.erc20Address = erc20Address;
+    this.stores.userMatic.erc20Address = erc20Address; //share the address
 
     let address;
 
@@ -361,7 +363,7 @@ export class UserStoreMetamask extends StoreConstructor {
 
     this.erc20Address = erc20Address;
 
-    if (!!Number(address)) {
+/*     if (!!Number(address)) {
       if (!this.erc20TokenDetails) {
         try {
           this.erc20TokenDetails = {
@@ -383,7 +385,7 @@ export class UserStoreMetamask extends StoreConstructor {
       this.syncLocalStorage();
     } else {
       this.stores.user.hrc20Address = '';
-    }
+    } */
   };
 
   setTokenHRC20 = async (erc20Address: string) => {

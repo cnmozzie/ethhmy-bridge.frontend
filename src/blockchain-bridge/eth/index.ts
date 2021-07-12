@@ -132,12 +132,14 @@ const init = (config: TConfig, inject: any): INetworkMethods => {
   };
 };
 
-let ethNetwork: INetworkMethods, binanceNetwork: INetworkMethods, maticNetwork: INetworkMethods;
+let ethNetwork: INetworkMethods, binanceNetwork: INetworkMethods, maticNetwork: INetworkMethods, binanceNetworkClient: INetworkMethods, maticNetworkClient: INetworkMethods;
 
 export const initNetworks = (fullCinfig: TFullConfig) => {
   ethNetwork = init(fullCinfig.ethClient, true);
   binanceNetwork = init(fullCinfig.binanceClient, true);
-  maticNetwork = init(fullCinfig.hmyClient, false);
+  maticNetwork = init(fullCinfig.hmyClient, true);
+  maticNetworkClient = init(fullCinfig.hmyClient, false);
+  binanceNetworkClient = init(fullCinfig.binanceClient, false);
 };
 
 export const getExNetworkMethods = (): INetworkMethods => {
@@ -150,5 +152,13 @@ export const getExNetworkMethods = (): INetworkMethods => {
 };
 
 export const getMaticNetworkMethods = (): INetworkMethods => {
+  return maticNetworkClient;
+};
+
+export const getBinanceNetworkMethods = (): INetworkMethods => {
+  return binanceNetworkClient;
+};
+
+export const getInjectMaticNetworkMethods = (): INetworkMethods => {
   return maticNetwork;
 };
