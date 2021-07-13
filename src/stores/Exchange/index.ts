@@ -11,12 +11,12 @@ import {
   TFullConfig,
   TOKEN,
 } from '../interfaces';
-import { fullConfig, ERC20Operaions } from '../config';
+import { fullConfig, baseOperaion, adminAddress, maticBridgeAddress, maticLowbAddress  } from '../config';
 import * as operationService from 'services';
 import { getDepositAmount } from 'services';
 
 import * as contract from '../../blockchain-bridge';
-import { getExNetworkMethods, initNetworks, getMaticNetworkMethods, getInjectMaticNetworkMethods } from '../../blockchain-bridge';
+import { getExNetworkMethods, initNetworks, getBinanceNetworkMethods, getMaticNetworkMethods, getInjectMaticNetworkMethods } from '../../blockchain-bridge';
 import { sleep, uuid } from '../../utils';
 import { sendHrc20Token } from './hrc20';
 import { sendErc721Token } from './erc721';
@@ -26,6 +26,8 @@ import { send1ONEToken } from './1ONE';
 import { getContractMethods } from './helpers';
 import { defaultEthClient } from './defaultConfig';
 import { NETWORK_BASE_TOKEN, NETWORK_NAME } from '../names';
+import { divDecimals } from '../../utils';
+import _ from 'lodash';
 
 export enum EXCHANGE_STEPS {
   GET_TOKEN_ADDRESS = 'GET_TOKEN_ADDRESS',
@@ -84,7 +86,8 @@ export class Exchange extends StoreConstructor {
     super(stores);
 
     let counts = 0 // use temporarily
-    let totalWithdrawals = 0;
+    let totalWithdrawals = -1;
+    let totalDeposits = -1;
 
 
     const getInProgressActionIndex = () =>
@@ -111,15 +114,26 @@ export class Exchange extends StoreConstructor {
         }
         else if (currentAction.type == ACTION_TYPE.lockToken) {
           if (currentAction.transactionHash) {
-            totalWithdrawals = await this.getTotalWithdrawals()
+            [totalWithdrawals, totalDeposits] = await this.getTotalWithdrawals()
             console.log('total withrawals: ', totalWithdrawals)
             currentAction.status = STATUS.SUCCESS
           }
         }
         else if (currentAction.type == ACTION_TYPE.mintToken) {
-          let newTotalWithdrawals = await this.getTotalWithdrawals()
+          let [newTotalWithdrawals, newTotalDeposits] = await this.getTotalWithdrawals()
           if (newTotalWithdrawals > totalWithdrawals) {
             currentAction.status = STATUS.SUCCESS
+          }
+        }
+        else if (currentAction.type == ACTION_TYPE.getHRC20Address) {
+          [totalWithdrawals, totalDeposits] = await this.getTotalWithdrawals()
+          console.log('total withrawals: ', totalWithdrawals, totalDeposits)
+          if (totalWithdrawals == totalDeposits) {
+            currentAction.message = "no pending transactions now"
+            currentAction.status = STATUS.SUCCESS
+          }
+          else {
+            currentAction.message = "server is busy now: processing #" + totalDeposits
           }
         }
         else if (counts % 3 == 2) {
@@ -135,7 +149,7 @@ export class Exchange extends StoreConstructor {
           this.setStatus();
         }
       }
-      else if (waitingIndex >= 0 && waitingIndex < 5) {
+      else if (waitingIndex > 1 && waitingIndex < 5) {
         let currentAction = this.operation.actions[waitingIndex]
         currentAction.status = STATUS.IN_PROGRESS
       }
@@ -476,7 +490,7 @@ export class Exchange extends StoreConstructor {
 
   @action.bound
   async setOperationId(operationId: string) {
-    this.operation = ERC20Operaions[0]
+    this.operation = _.cloneDeep(baseOperaion)
 
     //this.mode = this.operation.type;
     this.token = this.operation.token;
@@ -494,7 +508,7 @@ export class Exchange extends StoreConstructor {
 
   @action.bound
   async createOperation() {
-    this.operation = ERC20Operaions[0]
+    this.operation = _.cloneDeep(baseOperaion)
 
     return this.operation.id;
   }
@@ -509,13 +523,13 @@ export class Exchange extends StoreConstructor {
 
       let operationId = id;
 
-      if (!operationId) { // if operation not created yet, create it
-        operationId = await this.createOperation();
+      //if (!operationId) { // if operation not created yet, create it
+        operationId = await this.createOperation(); //we don't need id
 
-        this.stores.routing.push(
-          this.token + '/operations/' + this.operation.id,
-        );
-      }
+        //this.stores.routing.push(
+          //this.token + '/operations/' + this.operation.id,
+        //);
+      //}
 
       // if (!operationId) {
       //   const bridgeSDK = new BridgeSDK({ logLevel: 2 }); // 2 - full logs, 1 - only success & errors, 0 - logs off
@@ -575,6 +589,7 @@ export class Exchange extends StoreConstructor {
 
       let ethMethods, hmyMethods;
       const exNetwork = getExNetworkMethods();
+      const binanceNetwork = getBinanceNetworkMethods();
       const maticNetwork = getMaticNetworkMethods();
       const injectMaticNetwork = getInjectMaticNetworkMethods();
 
@@ -594,12 +609,13 @@ export class Exchange extends StoreConstructor {
           break;
 
         case TOKEN.ERC20:
-          ethMethods = exNetwork.ethMethodsERC20;
           if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
             hmyMethods = maticNetwork.ethMethodsERC20; // cheat it!
+            ethMethods = exNetwork.ethMethodsERC20;
           }
           if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
             hmyMethods = injectMaticNetwork.ethMethodsERC20; // cheat it!
+            ethMethods = binanceNetwork.ethMethodsERC20;
           }
           break;
 
@@ -648,12 +664,47 @@ export class Exchange extends StoreConstructor {
       if (this.token === TOKEN.ERC20) { // now we will focus on these steps...
         let getHRC20Action = this.getActionByType(ACTION_TYPE.getHRC20Address);
 
+        if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+          const adminEthBalance = await maticNetwork.getEthBalance(adminAddress);
+          const bridgeEthBalance = await maticNetwork.getEthBalance(maticBridgeAddress);
+          let res = await hmyMethods.checkEthBalance(maticLowbAddress, maticBridgeAddress);
+          const lowbBalance = divDecimals(res, 18);
+          console.log(adminEthBalance, bridgeEthBalance, lowbBalance, this.transaction.amount)
+          if (Number(adminEthBalance) < 0.1 || Number(bridgeEthBalance) < 0.1) {
+            getHRC20Action.error = "Oracle account has not enough MATIC now"
+            getHRC20Action.status = STATUS.ERROR
+          }
+          else if (Number(lowbBalance) < Number(this.transaction.amount)) {
+            getHRC20Action.error = "Lack of liquidity: " + lowbBalance + " lowb in the pool."
+            getHRC20Action.status = STATUS.ERROR
+          }
+          else {
+            getHRC20Action.status = STATUS.IN_PROGRESS
+          }
+        }
+
+        if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+          const adminEthBalance = await binanceNetwork.getEthBalance(adminAddress);
+          console.log(adminEthBalance)
+          if (Number(adminEthBalance) < 0.1) {
+            getHRC20Action.error = "Oracle account has not enough BNB now"
+            getHRC20Action.status = STATUS.ERROR
+          }
+          else {
+            getHRC20Action.status = STATUS.SUCCESS
+          }
+        }
+
         while (
           getHRC20Action &&
           [STATUS.IN_PROGRESS, STATUS.WAITING].includes(getHRC20Action.status)
         ) {
           await sleep(3000);
           getHRC20Action = this.getActionByType(ACTION_TYPE.getHRC20Address);
+        }
+
+        if (getHRC20Action.status !== STATUS.SUCCESS) {
+          throw getHRC20Action.error
         }
 
         /* if (!this.stores.user.hrc20Address) {
@@ -668,6 +719,7 @@ export class Exchange extends StoreConstructor {
           );
           
           if (approveEthManger && approveEthManger.status === STATUS.WAITING) {
+            approveEthManger.status = STATUS.IN_PROGRESS
             const { approveAmount, erc20Address } = this.transaction;
 
             ethMethods.approveEthManger(
@@ -717,6 +769,7 @@ export class Exchange extends StoreConstructor {
           );
 
           if (approveHmyManger && approveHmyManger.status === STATUS.WAITING) {
+            approveHmyManger.status = STATUS.IN_PROGRESS
             await hmyMethods.approveEthManger(
               hrc20Address,
               this.transaction.approveAmount,
@@ -917,15 +970,17 @@ export class Exchange extends StoreConstructor {
       this.stores.user.isMetamask,
     );
 
-    let totalWithdrawals
+    let totalWithdrawals, totalDeposits
 
     if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
       totalWithdrawals = await hmyMethods.totalWithdrawals();
+      totalDeposits = await ethMethods.totalDeposits();
     }
     if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
       totalWithdrawals = await ethMethods.totalWithdrawals();
+      totalDeposits = await hmyMethods.totalDeposits();
     }
-    return totalWithdrawals
+    return [totalWithdrawals, totalDeposits]
   };
 
   clear() {

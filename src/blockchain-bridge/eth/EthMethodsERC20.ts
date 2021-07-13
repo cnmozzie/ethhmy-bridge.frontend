@@ -223,9 +223,7 @@ export class EthMethodsERC20 {
   };
 
   totalWithdrawals = async () => {
-
     let res;
-
     try {
       res = await this.ethManagerContract.methods
       .withdrawId()
@@ -234,9 +232,20 @@ export class EthMethodsERC20 {
       console.error(e);
       debugger;
     }
-
     return res;
+  };
 
+  totalDeposits = async () => {
+    let res;
+    try {
+      res = await this.ethManagerContract.methods
+      .depositId()
+      .call();
+    } catch (e) {
+      console.error(e);
+      debugger;
+    }
+    return res;
   };
 
   lockNative = async (userAddr, amount, sendTxCallback?) => {

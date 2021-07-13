@@ -259,7 +259,7 @@ const binanceClient: TConfig = {
     message: null
   }
 
-  const approveOperaion: IOperation = {
+  export const baseOperaion: IOperation = {
     id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
     type: EXCHANGE_MODE.ETH_TO_ONE,
     erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
@@ -275,68 +275,6 @@ const binanceClient: TConfig = {
     actions: [getAddressWaiting, approveEthWaiting, lockWaiting, waitBlockWaiting, mintWaiting]
   }
 
-  const lockOperaion: IOperation = {
-    id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
-    type: EXCHANGE_MODE.ETH_TO_ONE,
-    erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
-    hrc20Address: "0x498c9f1D43F34eB68FBd19B6a0544f1AAae649c0",
-    token: TOKEN.ERC20,
-    network: NETWORK_TYPE.BINANCE,
-    status: STATUS.IN_PROGRESS,
-    amount: 1000,
-    ethAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    oneAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    timestamp: 1625889416,
-    fee: null,
-    actions: [getAddressSuccess, approveEthSuccess, lockInProgress, waitBlockWaiting, mintWaiting]
-  }
-
-  const waitOperaion: IOperation = {
-    id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
-    type: EXCHANGE_MODE.ETH_TO_ONE,
-    erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
-    hrc20Address: "0x498c9f1D43F34eB68FBd19B6a0544f1AAae649c0",
-    token: TOKEN.ERC20,
-    network: NETWORK_TYPE.BINANCE,
-    status: STATUS.IN_PROGRESS,
-    amount: 1000,
-    ethAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    oneAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    timestamp: 1625889416,
-    fee: null,
-    actions: [getAddressSuccess, approveEthSuccess, lockSuccess, waitBlockInProgress, mintWaiting]
-  }
-
-  const mintOperaion: IOperation = {
-    id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
-    type: EXCHANGE_MODE.ETH_TO_ONE,
-    erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
-    hrc20Address: "0x498c9f1D43F34eB68FBd19B6a0544f1AAae649c0",
-    token: TOKEN.ERC20,
-    network: NETWORK_TYPE.BINANCE,
-    status: STATUS.IN_PROGRESS,
-    amount: 1000,
-    ethAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    oneAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    timestamp: 1625889416,
-    fee: null,
-    actions: [getAddressSuccess, approveEthSuccess, lockSuccess, waitBlockSuccess, mintInProgress]
-  }
-
-  const lastOperaion: IOperation = {
-    id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
-    type: EXCHANGE_MODE.ETH_TO_ONE,
-    erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
-    hrc20Address: "0x498c9f1D43F34eB68FBd19B6a0544f1AAae649c0",
-    token: TOKEN.ERC20,
-    network: NETWORK_TYPE.BINANCE,
-    status: STATUS.SUCCESS,
-    amount: 1000,
-    ethAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    oneAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    timestamp: 1625889416,
-    fee: null,
-    actions: [getAddressSuccess, approveEthSuccess, lockSuccess, waitBlockSuccess, mintSuccess]
-  }
-
-  export const ERC20Operaions: IOperation[] = [approveOperaion, lockOperaion, waitOperaion, mintOperaion, lastOperaion]
+  export const adminAddress = '0xD35a860B6fDB386Ae9d83D72209DAA704631CA15'
+  export const maticBridgeAddress = '0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1'
+  export const maticLowbAddress = '0x5cd4d2f947ae4568a8bd0905dbf12d3454d197f3'
