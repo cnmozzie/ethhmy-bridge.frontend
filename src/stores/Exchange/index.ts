@@ -512,6 +512,7 @@ export class Exchange extends StoreConstructor {
     //   ? this.operation.amount
     //   : String(this.operation.amount);
     this.operation.ethAddress = this.stores.userMetamask.ethAddress; // correct the address
+    this.operation.oneAddress = this.stores.userMatic.ethAddress; // correct the address
     this.transaction.ethAddress = this.operation.ethAddress;
     this.transaction.oneAddress = this.operation.oneAddress;
     this.transaction.erc20Address = this.operation.erc20Address;
