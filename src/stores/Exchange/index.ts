@@ -262,17 +262,29 @@ export class Exchange extends StoreConstructor {
             //   ).checksum;
             // }
 
+            let lowbBalance, ethAddress;
+
             switch (this.mode) {
               case EXCHANGE_MODE.ETH_TO_ONE:
                 this.transaction.ethAddress = this.stores.userMetamask.ethAddress;
+                lowbBalance = this.stores.userMetamask.erc20Balance
+                ethAddress = this.transaction.oneAddress
                 break;
               case EXCHANGE_MODE.ONE_TO_ETH:
                 this.transaction.oneAddress = this.stores.userMatic.ethAddress;
                 this.transaction.hrc20Address = this.stores.userMatic.erc20Address;
+                lowbBalance = this.stores.userMatic.erc20Balance
+                ethAddress = this.transaction.ethAddress
                 break;
             }
 
             this.transaction.approveAmount = '0';
+
+            console.log(lowbBalance, ethAddress)
+
+            if (Number(this.transaction.amount) <= 0 || Number(this.transaction.amount) > Number(lowbBalance) || ethAddress == "") {
+              return
+            }
 
             if (
               this.token === TOKEN.ERC721 ||
@@ -282,7 +294,8 @@ export class Exchange extends StoreConstructor {
                 this.mode === EXCHANGE_MODE.ETH_TO_ONE)
             ) {
               this.stepNumber = this.stepNumber + 2;
-            } else {
+            } 
+            else {
               await this.getAllowance();
 
               if (
@@ -314,7 +327,7 @@ export class Exchange extends StoreConstructor {
                 break;
             }
           },
-          validate: true,
+          //validate: true,
         },
       ],
     },
