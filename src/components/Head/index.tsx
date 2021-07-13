@@ -77,11 +77,11 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
               margin={{ right: 'small' }}
               onClick={goToBridge}
             >
-              <MainLogo src="/one.svg" />
+              <MainLogo src="/lowb.svg" />
             </Box>
             <Box>
               <Title size="medium" color="BlackTxt" bold>
-                Horizon by Harmony
+                Loser Bridge
               </Title>
             </Box>
           </Box>
@@ -113,7 +113,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
               <Text>Bridge</Text>
             </Box>
 
-            <Box
+{/*             <Box
               className={cn(styles.itemToken, isTokens ? styles.selected : '')}
               onClick={() => {
                 routing.push(`/tokens`);
@@ -132,7 +132,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
               }}
             >
               <Text>Transactions</Text>
-            </Box>
+            </Box> */}
 
             {/*<Box*/}
             {/*  className={cn(styles.itemToken, isInfo ? styles.selected : '')}*/}

@@ -206,7 +206,7 @@ export const EthBridge = observer((props: any) => {
           <Box direction="column" margin={{ top: 'large' }}>
             <Box direction="row" justify="start" gap="20px">
               <NetworkButton type={NETWORK_TYPE.BINANCE} />
-              <NetworkButton type={NETWORK_TYPE.ETHEREUM} />
+              {/* <NetworkButton type={NETWORK_TYPE.ETHEREUM} /> */}
             </Box>
             <WalletBalances />
           </Box>

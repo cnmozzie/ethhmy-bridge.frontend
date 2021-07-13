@@ -9,6 +9,7 @@ import { AdminOperations } from './AdminOperations';
 import { Tokens } from './Tokens';
 import { createStoresContext } from './create-context';
 import { Erc20SelectStore } from './Erc20SelectStore';
+import { NETWORK_TYPE } from './interfaces';
 
 export interface IStores {
   routing?: RouterStore;
@@ -27,6 +28,7 @@ const stores: IStores = {};
 
 stores.routing = new RouterStore();
 stores.exchange = new Exchange(stores);
+stores.exchange.network = NETWORK_TYPE.BINANCE // force to change to BINANCE!!!
 stores.operations = new Operations(stores);
 stores.adminOperations = new AdminOperations(stores);
 stores.tokens = new Tokens(stores);
