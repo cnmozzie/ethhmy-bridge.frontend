@@ -201,6 +201,18 @@ export class Exchange extends React.Component<
   };
 
   @computed
+  get bridgeFees(): string {
+    const { user, exchange, userMatic, userMetamask } = this.props;
+    if (exchange.mode === EXCHANGE_MODE.ONE_TO_ETH) {
+      return userMatic.bridgeFees
+    }
+    else {
+      return userMetamask.bridgeFees
+    }
+
+  }
+
+  @computed
   get tokenInfo(): ITokenInfo {
     const { user, exchange, userMatic, userMetamask } = this.props;
 
@@ -301,7 +313,7 @@ export class Exchange extends React.Component<
             <Box margin={{ vertical: 'small' }}>
               <Text>Success</Text>
             </Box>
-            {exchange.operation.type === EXCHANGE_MODE.ETH_TO_ONE &&
+{/*             {exchange.operation.type === EXCHANGE_MODE.ETH_TO_ONE &&
             [
               TOKEN.ERC20,
               TOKEN.ETH,
@@ -319,7 +331,7 @@ export class Exchange extends React.Component<
                   bridged assets.
                 </Text>
               </Box>
-            ) : null}
+            ) : null} */}
           </Box>
         );
         description = '';
@@ -546,6 +558,19 @@ export class Exchange extends React.Component<
                           Number(value) > Number(this.tokenInfo.maxAmount)
                         ) {
                           const defaultMsg = `Exceeded the maximum amount`;
+                          errors.push(defaultMsg);
+                        }
+
+                        callback(errors);
+                      },
+                      (_, value, callback) => {
+                        const errors = [];
+
+                        if (
+                          value &&
+                          Number(value) <= Number(this.bridgeFees)
+                        ) {
+                          const defaultMsg = ` Transfer amount should cover the fees`;
                           errors.push(defaultMsg);
                         }
 

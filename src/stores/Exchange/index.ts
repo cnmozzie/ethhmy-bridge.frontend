@@ -110,6 +110,7 @@ export class Exchange extends StoreConstructor {
           await this.getAllowance()
           if (!this.needToApprove) {
             currentAction.status = STATUS.SUCCESS
+            currentAction.timestamp = (new Date().getTime())/1000
           }
         }
         else if (currentAction.type == ACTION_TYPE.lockToken) {
@@ -152,6 +153,7 @@ export class Exchange extends StoreConstructor {
       else if (waitingIndex > 1 && waitingIndex < 5) {
         let currentAction = this.operation.actions[waitingIndex]
         currentAction.status = STATUS.IN_PROGRESS
+        currentAction.timestamp = (new Date().getTime())/1000
       }
 
     };
@@ -262,19 +264,21 @@ export class Exchange extends StoreConstructor {
             //   ).checksum;
             // }
 
-            let lowbBalance, ethAddress;
+            let lowbBalance, bridgeFees, ethAddress;
 
             switch (this.mode) {
               case EXCHANGE_MODE.ETH_TO_ONE:
                 this.transaction.ethAddress = this.stores.userMetamask.ethAddress;
                 lowbBalance = this.stores.userMetamask.erc20Balance
                 ethAddress = this.transaction.oneAddress
+                bridgeFees = this.stores.userMetamask.bridgeFees
                 break;
               case EXCHANGE_MODE.ONE_TO_ETH:
                 this.transaction.oneAddress = this.stores.userMatic.ethAddress;
                 this.transaction.hrc20Address = this.stores.userMatic.erc20Address;
                 lowbBalance = this.stores.userMatic.erc20Balance
                 ethAddress = this.transaction.ethAddress
+                bridgeFees = this.stores.userMatic.bridgeFees
                 break;
             }
 
@@ -282,7 +286,7 @@ export class Exchange extends StoreConstructor {
 
             console.log(lowbBalance, ethAddress)
 
-            if (Number(this.transaction.amount) <= 0 || Number(this.transaction.amount) > Number(lowbBalance) || ethAddress == "") {
+            if (Number(this.transaction.amount) <= Number(bridgeFees) || Number(this.transaction.amount) > Number(lowbBalance) || ethAddress == "") {
               return
             }
 
@@ -401,7 +405,7 @@ export class Exchange extends StoreConstructor {
     if (this.mode === EXCHANGE_MODE.ONE_TO_ETH) {
       // this.transaction.ethAddress = this.stores.userMetamask.ethAddress;
       this.transaction.ethAddress = '';
-      this.transaction.oneAddress = this.stores.user.address;
+      this.transaction.oneAddress = this.stores.userMatic.ethAddress;
     }
   }
 
@@ -511,11 +515,11 @@ export class Exchange extends StoreConstructor {
     // this.transaction.amount = Array.isArray(this.operation.amount)
     //   ? this.operation.amount
     //   : String(this.operation.amount);
-    this.operation.ethAddress = this.stores.userMetamask.ethAddress; // correct the address
-    this.operation.oneAddress = this.stores.userMatic.ethAddress; // correct the address
-    this.transaction.ethAddress = this.operation.ethAddress;
-    this.transaction.oneAddress = this.operation.oneAddress;
-    this.transaction.erc20Address = this.operation.erc20Address;
+    // this.operation.ethAddress = this.stores.userMetamask.ethAddress; // correct the address
+    // this.operation.oneAddress = this.stores.userMatic.ethAddress; // correct the address
+    // this.transaction.ethAddress = this.operation.ethAddress;
+    // this.transaction.oneAddress = this.operation.oneAddress;
+    this.transaction.erc20Address = this.operation.erc20Address; // no use actually
 
     this.setStatus();
   }
@@ -694,6 +698,7 @@ export class Exchange extends StoreConstructor {
           }
           else {
             getHRC20Action.status = STATUS.IN_PROGRESS
+            getHRC20Action.timestamp = (new Date().getTime())/1000
           }
         }
 

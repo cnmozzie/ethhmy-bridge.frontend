@@ -36,7 +36,7 @@ export const App: React.FC = () => (
           path="/:token/operations/:operationId"
           component={EthBridge}
         />
-        <Redirect to="/busd" />
+        <Redirect to="/erc20" />
       </Switch>
     </React.Suspense>
     <ActionModals />

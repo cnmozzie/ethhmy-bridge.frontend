@@ -23,17 +23,17 @@ const STEPS_TITLE_BINANCE: Record<ACTION_TYPE, string> = {
   depositOne: 'Deposit ONE tokens',
   withdrawOne: 'Withdraw ONE tokens',
 
-  getHRC20Address: 'Register user BEP20 on Harmony',
+  getHRC20Address: 'Checking Loser Bridge status',
   approveEthManger: 'User approve bridge to lock tokens ',
   lockToken: 'Bridge lock tokens on Binance Smart Chain',
-  waitingBlockNumber: 'Wait for 15 block confirmations',
-  mintToken: 'Bridge mint tokens on Harmony',
-  mintTokenRollback: 'Unlock failed, minting back the burned tokens on Harmony',
+  waitingBlockNumber: 'Wait for 3 block confirmations',
+  mintToken: 'Bridge mint tokens on Matic',
+  mintTokenRollback: 'Unlock failed, minting back the burned tokens on Matic',
 
   // ONE TO ETH
   approveHmyManger: 'User approve bridge to burn tokens',
-  burnToken: 'Bridge burn tokens on Harmony',
-  waitingBlockNumberHarmony: 'Wait for 13 block confirmations',
+  burnToken: 'Bridge burn tokens on Matic',
+  waitingBlockNumberHarmony: 'Wait for 3 block confirmations',
   unlockToken: 'Bridge unlocks tokens on Binance Smart Chain',
   unlockTokenRollback: 'Mint failed, unlocking tokens on Binance Smart Chain',
 

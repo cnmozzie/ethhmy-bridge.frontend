@@ -359,7 +359,7 @@ export class UserStoreEx extends StoreConstructor {
 
   @action public async getRates() {
     let res = await agent.get<{ body: IOperation }>(
-      'https://api.binance.com/api/v1/ticker/24hr?symbol=ONEUSDT',
+      'https://api.binance.com/api/v1/ticker/24hr?symbol=MATICUSDT',
     );
 
     this.oneRate = res.body.lastPrice;

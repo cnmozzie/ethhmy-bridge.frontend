@@ -68,7 +68,7 @@ export const Price = observer(
       >
         <Text style={{ fontSize: 14 }}>{`${formatWithSixDecimals(
           props.value,
-        )} ${props.isEth ? NETWORK_BASE_TOKEN[props.network] : 'ONE'}`}</Text>
+        )} ${props.isEth ? NETWORK_BASE_TOKEN[props.network] : 'Matic'}`}</Text>
         <Text size="xsmall" color="rgba(102, 102, 102, 0.9)">
           ${formatWithSixDecimals(props.value * rate)}
         </Text>

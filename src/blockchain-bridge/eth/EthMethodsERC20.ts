@@ -2,7 +2,8 @@ import { Contract } from 'web3-eth-contract';
 import { getAddress } from '@harmony-js/crypto';
 import Web3 from 'web3';
 import { mulDecimals } from '../../utils';
-import { getGasPrice } from './helpers';
+import { getGasPrice, getMaticGasPrice } from './helpers';
+import { maticBridgeAddress } from '../../stores/config';
 const BN = require('bn.js');
 
 export interface IEthMethodsInitParams {
@@ -44,6 +45,11 @@ export class EthMethodsERC20 {
       MyERC20Json.abi,
       erc20Address,
     );
+
+    if (this.ethManagerAddress == maticBridgeAddress) {
+      this.gasPrice = await getMaticGasPrice()
+      console.log(this.gasPrice)
+    }
 
     await erc20Contract.methods
       .approve(this.ethManagerAddress, mulDecimals(amount, decimals))
@@ -129,6 +135,11 @@ export class EthMethodsERC20 {
       estimateGas + estimateGas * 0.3,
       Number(process.env.ETH_GAS_LIMIT),
     );
+
+    if (this.ethManagerAddress == maticBridgeAddress) {
+      this.gasPrice = await getMaticGasPrice()
+      console.log(this.gasPrice)
+    }
 
     let transaction = await this.ethManagerContract.methods
       .depositFor(mulDecimals(amount, decimals), userAddr)
@@ -240,6 +251,19 @@ export class EthMethodsERC20 {
     try {
       res = await this.ethManagerContract.methods
       .depositId()
+      .call();
+    } catch (e) {
+      console.error(e);
+      debugger;
+    }
+    return res;
+  };
+
+  fees = async () => {
+    let res;
+    try {
+      res = await this.ethManagerContract.methods
+      .fees()
       .call();
     } catch (e) {
       console.error(e);

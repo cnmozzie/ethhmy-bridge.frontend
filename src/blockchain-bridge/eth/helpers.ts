@@ -18,9 +18,19 @@ export const getGasPrice = async (web3: Web3) => {
     console.error('Error get gas price');
   }
 
+  console.log(gasPrice/1000000000, gasPriceApi/1000000000)
+
   const res = gasPrice.lt(gasPriceApi) ? gasPriceApi : gasPrice;
 
   return res;
+};
+
+export const getMaticGasPrice = async () => {
+  let res = await fetch('https://gasstation-mainnet.matic.network')
+  let json = await res.json()
+  let gasPrice = Math.floor(json.standard*1000000000)
+
+  return gasPrice;
 };
 
 export const getNetworkFee = async (web3: Web3) => {

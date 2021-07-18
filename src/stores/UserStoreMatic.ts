@@ -3,7 +3,7 @@ import { statusFetching } from '../constants';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { StoreConstructor } from './core/StoreConstructor';
 import {
-  getExNetworkMethods,
+  getInjectMaticNetworkMethods,
   hmyMethodsBEP20,
   hmyMethodsERC20,
   hmyMethodsERC721,
@@ -36,6 +36,7 @@ export class UserStoreMatic extends StoreConstructor {
   @observable public ethBalance: string = '0';
   @observable public ethBUSDBalance: string = '0';
   @observable public ethLINKBalance: string = '0';
+  @observable public bridgeFees: string = '0';
 
   @observable erc20Address: string = '';
   @observable erc20TokenDetails: IERC20Token;
@@ -225,7 +226,7 @@ export class UserStoreMatic extends StoreConstructor {
   }
 
   @action.bound public getBalances = async () => {
-    const exNetwork = getExNetworkMethods();
+    const exNetwork = getInjectMaticNetworkMethods();
 
     if (this.ethAddress && this.isNetworkActual) {
       try {
@@ -252,6 +253,17 @@ export class UserStoreMatic extends StoreConstructor {
         //   this.ethBUSDBalance = divDecimals(res, 18);
         // }
 
+        if (this.bridgeFees == '0') {
+          const bridgeFees = await exNetwork.ethMethodsERC20.fees();
+
+          this.bridgeFees = divDecimals(
+            bridgeFees,
+            18,
+            //this.erc20TokenDetails.decimals,
+          );
+          //console.log(this.bridgeFees)
+        }
+
         this.ethBalance = await exNetwork.getEthBalance(this.ethAddress);
       } catch (e) {
         console.error(e);
@@ -260,7 +272,7 @@ export class UserStoreMatic extends StoreConstructor {
   };
 
   @action.bound public setToken = async (erc20Address: string) => {
-    const exNetwork = getExNetworkMethods();
+    const exNetwork = getInjectMaticNetworkMethods();
 
     this.erc20TokenDetails = null;
     this.erc20Address = '';
@@ -413,7 +425,7 @@ export class UserStoreMatic extends StoreConstructor {
   };
 
   @action.bound public setERC721Token = async (erc20Address: string) => {
-    const exNetwork = getExNetworkMethods();
+    const exNetwork = getInjectMaticNetworkMethods();
 
     this.erc20TokenDetails = null;
     this.erc20Address = '';

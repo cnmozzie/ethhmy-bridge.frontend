@@ -8,53 +8,53 @@ import { Icon } from 'components/Base/components/Icons';
 
 const faqConfig = [
   {
-    label: 'What is Horizon bridge?',
+    label: 'What is Loser bridge?',
     text: () => (
       <p>
-        Horizon is a cross-chain bridge that allows exchange of crypto assets
+        Loser bridge is a cross-chain bridge that allows exchange of crypto assets
         (e.g., fungible/non-fungible tokens, stablecoins) between Ethereum,
-        Binance Smart Chain and Harmony blockchains.
+        Binance Smart Chain and Matic blockchains.
         <br />
         <br />
-        Horizon UI is accessible at{' '}
+        Loser bridge UI is accessible at{' '}
         <a href="https://bridge.harmony.one/" target="_blank">
-          https://bridge.harmony.one/
+          https://www.loserbridge.org/
         </a>
       </p>
     ),
   },
   {
-    label: 'What is Horizon used for?',
+    label: 'What is Loser bridge used for?',
     text: () => (
       <p>
-        Horizon’s main purpose is to enable transfer of assets from Ethereum (or
-        Binance Smart Chain) to Harmony. Users holding assets on Ethereum (or
+        Loser bridge’s main purpose is to enable transfer of assets from Ethereum (or
+        Binance Smart Chain) to Matic. Users holding assets on Ethereum (or
         Binance Smart Chain) can exchange them to corresponding assets on
-        Harmony (1:1). Horizon also allows redemption of the exchanged assets
+        Matic (1:1). Loser bridge also allows redemption of the exchanged assets
         back to the user's Ethereum (or Binance Smart Chain) account at any
         time.
       </p>
     ),
   },
   {
-    label: 'How does Horizon work?',
+    label: 'How does Loser bridge work?',
     text: () => (
       <p>
-        Horizon is comprised of two core components:
+        Loser bridge is comprised of two core components:
         <ul>
           <li>
             A set of smart contracts deployed on both Ethereum (and Binance
-            Smart Chain) and Harmony blockchains
+            Smart Chain) and Matic blockchains
           </li>
           <li>
-            A pool of validators that listens to events on both Ethereum and
-            Harmony bridge smart contracts. When a token lock action is detected
-            on Ethereum blockchain, the pool of validators validates it and
-            relays the finalized information to the Harmony blockchain: here,
+            A hidden validator that listens to events on both Ethereum (BSC) and
+            Matic smart contracts. When a token lock action is detected
+            on Ethereum (BSC) blockchain, the validator validates it and
+            relays the finalized information to the Matic blockchain: here,
             the same amount of a bridged token is minted. On the opposite, when
-            a bridged token burn is detected on Harmony blockchain, the pool of
-            validators validates it and relays the finalized information to the
-            Ethereum blockchain, where the same amount of the original token is
+            a bridged token lock is detected on Matic blockchain, the 
+            validator validates it and relays the finalized information to the
+            Ethereum (BSC) blockchain, where the same amount of the original token is
             unlocked.
           </li>
         </ul>
@@ -62,19 +62,18 @@ const faqConfig = [
     ),
   },
   {
-    label: 'What kind of assets can be bridged using Horizon?',
+    label: 'What kind of assets can be bridged using Loser bridge?',
     text: () => (
       <>
         <li>
           <b>From Ethereum:</b>
         </li>
         <ul>
-          <li>Stablecoins like BUSD, LINK, etc</li>
-          <li>Any ERC20 tokens like USDT, USDC, WETH, WBTC, etc</li>
+          <li>None for Loser bridge for now...</li>
           <li>
-            You can find information about the bridged assets at{' '}
-            <a href="https://bridge.harmony.one/tokens" target="_blank">
-              https://bridge.harmony.one/tokens
+            You can bridge your assets at{' '}
+            <a href="https://wallet.matic.network/" target="_blank">
+              Matic Web Walle
             </a>
           </li>
         </ul>
@@ -84,90 +83,39 @@ const faqConfig = [
         </li>
         <ul>
           <li>
-            Any BEP20 tokens like Binance-Peg Ethereum Token, Binance-Peg BUSD
-            Token, Binance-Peg BUSD-T
+            Lowb
           </li>
         </ul>
       </>
     ),
   },
   {
-    label: 'How are assets mapped between Ethereum and Harmony?',
+    label: 'How are assets mapped between Ethereum, Binance Smart Chain and Matic?',
     text: () => (
       <Box direction="column" gap="15px">
         <p>
-          Assets are mapped 1:1. For example, 10 “BUSD” on Ethereum after
-          bridging will be available as 10 “1BUSD” on Harmony. Here, “1BUSD” is
-          the token symbol of the token issued on Harmony corresponding to
-          “BUSD” token symbol on Ethereum.
+          Assets are mapped 1:1. For example, 10 “lowb” on Ethereum after
+          bridging will be available as 10 “lowb” on Matic.
         </p>
         <p>
-          Same 1:1 mapping holds true for Binance Smart Chain. However, the
-          assets from two different parent chains (Ethereum or Binance Smart
-          Chain), after bridging will be represented using different bridged
-          assets on Harmony. For instance, 5 “Binance Smart Chain BUSD“ after
-          bridging will be available as 5 “bscBUSD“ on Harmony. Here, “bscBUSD”
-          is the token symbol of the token issued on Harmony corresponding to
-          “BUSD” token symbol on Binance Smart Chain.
+          Same 1:1 mapping holds true for Binance Smart Chain.
         </p>
         <p>
-          And, the “1BUSD“ and “bscBUSD“ are not interchangeable, meaning one
-          cannot bridge BUSD from Ethereum to Harmony and then withdraw it on
+          And, the “lowb“ on all three chains are interchangeable, meaning one
+          can bridge lowb from Ethereum to Matic and then withdraw it on
           Binance Smart Chain.
         </p>
       </Box>
     ),
   },
   {
-    label:
-      'What are the two types of tokens issued on Harmony when bridged using Horizon?',
-    text: () => (
-      <p>
-        Horizon supports issuing of both permissioned and permissionless tokens
-        for Ethereum bridging.
-        <ul>
-          <li>
-            BUSD and LINK are issued as permissioned tokens, where partners like
-            Binance, ChainLink can work with Harmony to deploy their audited
-            smart contracts such that bridge can issue full-feature smart
-            contract tokens for the corresponding Ethereum tokens. This enables
-            full utilization of the bridged tokens. For example, the bridged
-            “1LINK” on Harmony can be directly used to pay the oracle providers
-            through chainlink’s oracle smart contract, which would not have been
-            possible if “1LINK” was HRC20.
-          </li>
-          <li>
-            Any other ERC20 token is bridged in a permissionless manner, where
-            the bridge will issue 1:1 HRC20 tokens. For example, a user after
-            bridging their USDT will receive equivalent “1USDT” HRC20 tokens.
-          </li>
-          <li>
-            For Binance Smart Chain, permissionless HRC20 tokens are issued for
-            any BEP20 token.
-          </li>
-        </ul>
-      </p>
-    ),
-  },
-  {
-    label:
-      'What is the difference between permissioned token (BUSD/LINK) vs permission-less token (ERC20)?',
-    text: () => (
-      <p>
-        Permissioned tokens (BUSD, LINK) will have the full-features of the
-        token’s smart contract, whereas permissionless tokens are issued as
-        HRC20 with only ERC20-like features.
-      </p>
-    ),
-  },
-  {
-    label: 'Does the token supply increase when using Horizon?',
+    label: 'Does the token supply increase when using Loser bridge?',
     text: () => (
       <p>
         No: The supply of the original token never change as a result of using
-        Horizon: Horizon bridge locks a certain amount of a token on Ethereum
+        Loser bridge: Loser bridge locks a certain amount of a token on Ethereum
         blockchain (essentially taking it out of circulation) and mints the
-        exact same amount of tokens on the Harmony blockchain, that represents
+        exact same amount of tokens on the Matic blockchain, that represents
         in all respects the original token (i.e. regenerating the locked
         supply). As a result, the circulating supply of the original token will
         stay the same: it's just split across two different blockchains instead
@@ -179,22 +127,22 @@ const faqConfig = [
     label: 'What happens to my original tokens if I sell the bridged tokens?',
     text: () => (
       <p>
-        Once you use Horizon to transfer your original tokens from Ethereum to
-        Harmony, the original tokens get stored and locked in the Horizon
-        contracts: you do not own those tokens on Ethereum anymore. On the other
+        Once you use Loser bridge to transfer your original tokens from Ethereum (BSC) to
+        Matic, the original tokens get stored and locked in the Loser bridge
+        contracts: you do not own those tokens on Ethereum (BSC) anymore. On the other
         side, you now own the same amount of tokens that gets sent to you on the
-        Harmony blockchain.
+        Matic blockchain.
       </p>
     ),
   },
 
   {
-    label: 'Can I send my bridged tokens back from Harmony to Ethereum?',
+    label: 'Can I send my bridged tokens back from Matic to Ethereum (BSC)?',
     text: () => (
       <p>
-        Yes: you can send the bridged tokens from Harmony to Ethereum at any
+        Yes: you can send the bridged tokens from Matic to Ethereum (BSC) at any
         time, and receive back the same amount of the original token on
-        Ethereum.
+        Ethereum (BSC).
       </p>
     ),
   },
@@ -204,7 +152,7 @@ const faqConfig = [
     text: () => (
       <p>
         There is no limit on the amount of tokens that can be bridged from
-        Ethereum to Harmony.
+        Ethereum (BSC) to Matic.
       </p>
     ),
   },
@@ -214,7 +162,7 @@ const faqConfig = [
     text: () => (
       <p>
         Yes. You can transfer the bridged tokens to other users and they can
-        redeem them back to their Ethereum accounts. This is possible because
+        redeem them back to their Ethereum (BSC) accounts. This is possible because
         when you lock your token, it gets pooled into a bridge smart contract
         from which any redeem request can be serviced without tying the locked
         tokens and redemption to a specific user account.
@@ -223,101 +171,68 @@ const faqConfig = [
   },
 
   {
-    label: 'Can I send native ONE tokens to Ethereum using Horizon?',
-    text: () => (
-      <>
-        <p>
-          Yes, the Horizon bridge supports sending ONE tokens and HRC20 tokens
-          issues on Harmony to Ethereum and back. Note that, the cost for any
-          bridge transfers to Ethereum will be approximately equivalent to price
-          of 400,000 Ethereum gas.
-        </p>
-        <p>
-          The Horizon bridge does not supports sending ONE tokens and HRC20
-          tokens to Binance Smart Chain yet, but this feature will be available
-          very soon.
-        </p>
-      </>
-    ),
-  },
-
-  {
-    label: 'What tokens are supported by Horizon?',
-    text: () => (
-      <>
-        <li>For Ethereum bridging: BUSD, LINK, any ERC20</li>
-        <li>For Binance Smart Chain bridging: any BEP20</li>
-      </>
-    ),
-  },
-
-  {
     label: 'What’s the cost of using the bridge?',
     text: () => (
       <Box direction="column" gap="15px">
         <p>
-          <b>Sending ERC20/ETH from Ethereum to Harmony</b>
+          <b>Sending ERC20 from Binance Smart Chain to Matic</b>
           <br />
           Involves two transactions (approve and lock) that requires
           approximately 100,000 Ethereum gas in total and the cost will be paid
-          by the user. The multisig confirmation cost on the Harmony network is
-          taken care by the validators.
+          by the user. 
+          Another 100 lowb will pay for the validators.
         </p>
         <p>
           <b>
-            Sending HRC20/ONE to Ethereum or redeeming the bridged tokens back
-            to Ethereum
+            Sending ERC20 to Binance Smart Chain or redeeming the bridged tokens back
+            to Binance Smart Chain
           </b>{' '}
           <br />
-          Any bridge transfers from Harmony to Ethereum involves multisig
-          confirmations by the validators, which is approximately 400,000
-          Ethereum gas. To cover this operating cost of the validators
-          (especially during the volatility of Ethereum gas price), we require
-          users to deposit an approximate network fee in ONE tokens, which is
-          equivalent to 400,000 Ethereum gas.
-        </p>
-        <p>
-          Similarly for Binance Smart Chain, however the transaction fee are
-          much lower (you get an accurate estimate of the bridge fee while using
-          the bridge).
+          1000 lowb will pay for the validators.
         </p>
       </Box>
     ),
   },
 
   {
-    label: 'Is Horizon bridge audited?',
+    label: 'Is Loser bridge audited?',
     text: () => (
       <p>
-        Yes, the Horizon bridge is fully audited and approved by{' '}
-        <a href="https://blog.peckshield.com" target="_blank">
-          Peckshield Inc.
-        </a>
+        No, the Loser bridge is not audited yet. Take your own risk.
       </p>
     ),
   },
 
   {
-    label: 'Is there a tutorial explaining how to use Horizon?',
+    label: 'Is there a tutorial explaining how to use Loser bridge?',
     text: () => (
       <p>
+        You can turn to {' '}
         <a
-          href="https://docs.harmony.one/home/showcases/crosschain/horizon-bridge"
+          href="https://t.me/loser_coin"
           target="_blank"
         >
-          https://docs.harmony.one/home/showcases/crosschain/horizon-bridge
+          Chinese Telegram 
         </a>
+        {' '}or{' '}
+        <a
+          href="https://t.me/loser_coin_english"
+          target="_blank"
+        >
+          English Telegram 
+        </a>
+        {' '}for help.
       </p>
     ),
   },
 
   {
-    label: 'Is Horizon open source?',
+    label: 'Is Loser bridge open source?',
     text: () => (
       <p>
-        Yes: Horizon code is open source, you can find it on GitHub:
-        <a href="https://github.com/harmony-one/ethhmy-bridge" target="_blank">
-          https://github.com/harmony-one/ethhmy-bridge
+        Yes: Loser bridge code is open source, you can find it on GitHub:
+        <a href="https://github.com/cnmozzie/ethhmy-bridge.frontend" target="_blank">
+            https://github.com/cnmozzie/ethhmy-bridge.frontend
         </a>
       </p>
     ),
@@ -328,18 +243,11 @@ const faqConfig = [
     text: () => (
       <Box direction="column" gap="15px">
         <li>
-          The Horizon bridge has still the lowest cost for Ethereum to Harmony
-          transfers, however Harmony to Ethereum transfers will be expensive (at
-          high Ethereum gas price). The Ethereum gas cost for our bridge is
-          comparable to every other bridge that is currently on Ethereum
-          mainnet. For example, SecretNetwork bridge, IoTex bridge, etc.
-        </li>
-        <li>
-          We have been working tirelessly on the trustless and gas-efficient
-          version of the bridge to Ethereum, which will be rolled out sometime
-          soon. The cost of transferring assets from Harmony to Ethereum is
-          expected to drastically improve. We will keep the community up to date
-          on this release.
+          The Loser bridge has still the lowest cost for Ethereum (BSC) to Matic
+          transfers, however Matic to Ethereum (BSC) transfers will be expensive (at
+          high Ethereum (BSC) gas price). The Ethereum (BSC) gas cost for our bridge is
+          comparable to every other bridge that is currently on Ethereum (BSC)
+          mainnet.
         </li>
       </Box>
     ),
@@ -350,27 +258,26 @@ const faqConfig = [
     text: () => (
       <p>
         <b>
-          Report any issues to bridge@harmony.one with one or more of the
+          Report any issues to our {' '}
+        <a
+          href="https://t.me/loser_coin"
+          target="_blank"
+        >
+          Chinese Telegram 
+        </a>
+        {' '}or{' '}
+        <a
+          href="https://t.me/loser_coin_english"
+          target="_blank"
+        >
+          English Telegram 
+        </a>
+        {' '} with one or more of the
           following informations:
         </b>
         <Box direction="column" gap="10px" margin={{ top: '10px' }}>
-          <p>
-            1) operation id, e.g., 7fa14f19-219f8220-1f209e61-8911e539 in{' '}
-            <span>
-              https://bridge.harmony.one/busd/operations/7fa14f19-219f8220-1f209e61-8911e539
-            </span>
-            . Every bridge operation is associated with a unique operation id,
-            which is available in your webpage URL. If you didn't store the
-            operation id, it is okay, follow 2) or 3)
-          </p>
-          <p>2) your transaction hashes on Ethereum or Harmony</p>
-          <p>3) your ETH or ONE account address</p>
-          <p>
-            <span>
-              Please allow 24-48 hours for your issue resolution. Happy
-              Bridging!!!
-            </span>
-          </p>
+          <p>1) your transaction hashes on Ethereum or Binance Smart Chain or Matic</p>
+          <p>2) your ETH/BSC/Matic account address</p>
         </Box>
       </p>
     ),

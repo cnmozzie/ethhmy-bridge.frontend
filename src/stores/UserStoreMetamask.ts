@@ -36,6 +36,7 @@ export class UserStoreMetamask extends StoreConstructor {
   @observable public ethBalance: string = '0';
   @observable public ethBUSDBalance: string = '0';
   @observable public ethLINKBalance: string = '0';
+  @observable public bridgeFees: string = '0';
 
   @observable erc20Address: string = '';
   @observable erc20TokenDetails: IERC20Token;
@@ -254,12 +255,23 @@ export class UserStoreMetamask extends StoreConstructor {
 
         let res = 0;
 
-        if (this.stores.exchange.network === NETWORK_TYPE.ETHEREUM) {
+/*         if (this.stores.exchange.network === NETWORK_TYPE.ETHEREUM) {
           res = await exNetwork.ethMethodsLINK.checkEthBalance(this.ethAddress);
           this.ethLINKBalance = divDecimals(res, 18);
 
           res = await exNetwork.ethMethodsBUSD.checkEthBalance(this.ethAddress);
           this.ethBUSDBalance = divDecimals(res, 18);
+        } */
+
+        if (this.bridgeFees == '0') {
+          const bridgeFees = await exNetwork.ethMethodsERC20.fees();
+
+          this.bridgeFees = divDecimals(
+            bridgeFees,
+            18,
+            //this.erc20TokenDetails.decimals,
+          );
+          //console.log(this.bridgeFees)
         }
 
         this.ethBalance = await exNetwork.getEthBalance(this.ethAddress);

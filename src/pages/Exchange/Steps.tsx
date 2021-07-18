@@ -6,7 +6,8 @@ import { Error } from 'ui';
 import cn from 'classnames';
 import * as styles from './feeds.styl';
 import { useStores } from 'stores';
-import { ACTION_TYPE, IAction, STATUS, TOKEN } from 'stores/interfaces';
+import { ACTION_TYPE, IAction, STATUS, TOKEN, EXCHANGE_MODE } from 'stores/interfaces';
+import { maticClientExplorerURL } from 'stores/config';
 import { dateTimeFormat, truncateAddressString } from '../../utils';
 import { getStepsTitle } from './steps-constants';
 // import { AddTokenPanel } from './AddTokenPanel';
@@ -39,9 +40,9 @@ const StepRow = observer(
     );
 
     const explorerUrl =
-      (isEth(action.type)
+      (exchange.mode == EXCHANGE_MODE.ETH_TO_ONE
         ? exchange.config.explorerURL
-        : process.env.HMY_EXPLORER_URL) + '/tx/';
+        : maticClientExplorerURL) + '/tx/';
 
     return (
       <Box

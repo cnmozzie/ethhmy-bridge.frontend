@@ -61,7 +61,7 @@ const binanceClient: TConfig = {
   }
 
   const maticClient: TConfig = {
-    nodeURL: "https://rpc-mumbai.matic.today",
+    nodeURL: "https://rpc-mumbai.maticvigil.com",
     explorerURL: "https://explorer-mumbai.maticvigil.com/",
     tokens: [
         TOKEN.ERC20,
@@ -80,7 +80,8 @@ const binanceClient: TConfig = {
       link: "0xFEFB4061d5c4F096D29e6ac8e300314b5F00199c",
       linkManager: "0x9EDC8d0Bde1Fc666831Bda1ded5B34A45f9E886C"
     },
-    gasPrice: 5000000000
+    gasPrice: 5000000000,
+    //network: 'matic'
   }
 
   export const fullConfig: TFullConfig = {
@@ -138,126 +139,62 @@ const binanceClient: TConfig = {
     id: "0135822a-46c2c508-3233267a-3ca69954",
     type: ACTION_TYPE.getHRC20Address,
     status: STATUS.WAITING,
-    timestamp: 1625889416,
+    timestamp: null,
     payload: null,
     transactionHash: null,
     error: null,
     message: null
   }
 
-  let getAddressInProgress = _.cloneDeep(getAddressWaiting)
-  getAddressInProgress.status = STATUS.IN_PROGRESS
 
   const approveEthWaiting: IAction = {
     id: "2ea5626d-be38aea6-c0ca098c-b8e41ae8",
     type: ACTION_TYPE.approveEthManger,
     status: STATUS.WAITING,
-    timestamp: 1625889416,
+    timestamp: null,
     payload: null,
     transactionHash: null,
     error: null,
     message: null
   }
 
-  let approveEthInProgress = _.cloneDeep(approveEthWaiting)
-  approveEthInProgress.status = STATUS.IN_PROGRESS
 
   const lockWaiting: IAction = {
     id: "540dcb4e-5eab1d50-f2efa385-33b3a1f1",
     type: ACTION_TYPE.lockToken,
     status: STATUS.WAITING,
-    timestamp: 1625889416,
+    timestamp: null,
     payload: null,
     transactionHash: null,
     error: null,
     message: null
   }
 
-  let lockInProgress = _.cloneDeep(lockWaiting)
-  lockInProgress.status = STATUS.IN_PROGRESS
 
   const waitBlockWaiting: IAction = {
     id: "11945d8e-7cb373a3-d5798771-4de1c088",
     type: ACTION_TYPE.waitingBlockNumber,
     status: STATUS.WAITING,
-    timestamp: 1625889416,
+    timestamp: null,
     payload: null,
     transactionHash: null,
     error: null,
-    message: "Currently at block 10459595, waiting for block 10459608 to be confirmed"
+    message: null
   }
 
-  let waitBlockInProgress = _.cloneDeep(waitBlockWaiting)
-  waitBlockInProgress.status = STATUS.IN_PROGRESS
 
   const mintWaiting: IAction = {
     id: "762607ff-3038f80d-5d5834a3-0fb07d63",
     type: ACTION_TYPE.mintToken,
     status: STATUS.WAITING,
-    timestamp: 1625889416,
+    timestamp: null,
     payload: null,
     transactionHash: null,
     error: null,
     message: null
   }
 
-  let mintInProgress = _.cloneDeep(mintWaiting)
-  mintInProgress.status = STATUS.IN_PROGRESS
 
-  const getAddressSuccess: IAction = {
-    id: "0135822a-46c2c508-3233267a-3ca69954",
-    type: ACTION_TYPE.getHRC20Address,
-    status: STATUS.SUCCESS,
-    timestamp: 1625889416,
-    payload: null,
-    transactionHash: null,
-    error: null,
-    message: null
-  }
-
-  const approveEthSuccess: IAction = {
-    id: "2ea5626d-be38aea6-c0ca098c-b8e41ae8",
-    type: ACTION_TYPE.approveEthManger,
-    status: STATUS.SUCCESS,
-    timestamp: 1625889416,
-    payload: null,
-    transactionHash: "0x1028380156fd16c47a7269a65c89ae6b4e6db238578d3e9037bc23cc8c252338",
-    error: null,
-    message: null
-  }
-
-  const lockSuccess: IAction = {
-    id: "540dcb4e-5eab1d50-f2efa385-33b3a1f1",
-    type: ACTION_TYPE.lockToken,
-    status: STATUS.SUCCESS,
-    timestamp: 1625889416,
-    payload: null,
-    transactionHash: "0x807be0c67ae3aa3b15fb699580b38ce841a0c2cd369360e4b63720981218e2d5",
-    error: null,
-    message: null
-  }
-
-  const waitBlockSuccess: IAction = {
-    id: "11945d8e-7cb373a3-d5798771-4de1c088",
-    type: ACTION_TYPE.waitingBlockNumber,
-    status: STATUS.SUCCESS,
-    timestamp: 1625889416,
-    payload: null,
-    transactionHash: null,
-    error: null,
-    message: null
-  }
-
-  const mintSuccess: IAction = {
-    id: "762607ff-3038f80d-5d5834a3-0fb07d63",
-    type: ACTION_TYPE.mintToken,
-    status: STATUS.SUCCESS,
-    timestamp: 1625889416,
-    payload: null,
-    transactionHash: "0x2d92ec13fc1d542a09bf1d80aa84395cc0ebba05ea127bdd33553d67954887b6",
-    error: null,
-    message: null
-  }
 
   export const baseOperaion: IOperation = {
     id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
@@ -270,7 +207,7 @@ const binanceClient: TConfig = {
     amount: 1000,
     ethAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
     oneAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    timestamp: 1625889416,
+    timestamp: null,
     fee: null,
     actions: [getAddressWaiting, approveEthWaiting, lockWaiting, waitBlockWaiting, mintWaiting]
   }
@@ -278,3 +215,4 @@ const binanceClient: TConfig = {
   export const adminAddress = '0xD35a860B6fDB386Ae9d83D72209DAA704631CA15'
   export const maticBridgeAddress = '0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1'
   export const maticLowbAddress = '0x5cd4d2f947ae4568a8bd0905dbf12d3454d197f3'
+  export const maticClientExplorerURL = "https://explorer-mumbai.maticvigil.com/"

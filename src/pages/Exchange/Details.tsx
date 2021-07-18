@@ -106,7 +106,7 @@ const AssetRow = props => {
 
 export const Details = observer<{ showTotal?: boolean; children?: any }>(
   ({ showTotal, children }) => {
-    const { exchange, userMetamask } = useStores();
+    const { exchange, userMetamask, userMatic } = useStores();
     const [isShowDetail, setShowDetails] = useState(false);
 
     const isETH = exchange.mode === EXCHANGE_MODE.ETH_TO_ONE;
@@ -115,15 +115,34 @@ export const Details = observer<{ showTotal?: boolean; children?: any }>(
       switch (exchange.token) {
         case TOKEN.ERC20:
           return (
-            <AssetRow
+            <><AssetRow
               label={`${String(
                 userMetamask.erc20TokenDetails &&
-                  userMetamask.erc20TokenDetails.symbol,
-              ).toUpperCase()} amount`}
+                userMetamask.erc20TokenDetails.symbol
+              ).toUpperCase()} Send`}
               value={formatWithSixDecimals(
-                exchange.transaction.amount.toString(),
-              )}
-            />
+                exchange.transaction.amount.toString()
+              )} />
+              { isETH?
+              (<AssetRow
+                label={`${String(
+                  userMetamask.erc20TokenDetails &&
+                  userMetamask.erc20TokenDetails.symbol
+                ).toUpperCase()} Receive`}
+                value={formatWithSixDecimals(
+                  Number(exchange.transaction.amount.toString())-Number(userMetamask.bridgeFees)
+                )} />) : 
+                (<AssetRow
+                label={`${String(
+                  userMetamask.erc20TokenDetails &&
+                  userMetamask.erc20TokenDetails.symbol
+                ).toUpperCase()} Receive`}
+                value={formatWithSixDecimals(
+                  Number(exchange.transaction.amount.toString())-Number(userMatic.bridgeFees)
+                )} />)
+              }
+            </>
+            
           );
 
         case TOKEN.ERC721:
@@ -181,19 +200,7 @@ export const Details = observer<{ showTotal?: boolean; children?: any }>(
         />
         {getAmount()}
 
-        {/*{exchange.mode === EXCHANGE_MODE.ONE_TO_ETH ? (*/}
-        {/*  <AssetRow label="Deposit amount" value="">*/}
-        {/*    {!exchange.isDepositAmountLoading ? (*/}
-        {/*      <Price*/}
-        {/*        value={Number(exchange.depositAmount.toFixed(2))}*/}
-        {/*        isEth={false}*/}
-        {/*        boxProps={{ pad: {} }}*/}
-        {/*      />*/}
-        {/*    ) : (*/}
-        {/*      <Text>...loading</Text>*/}
-        {/*    )}*/}
-        {/*  </AssetRow>*/}
-        {/*) : null}*/}
+        
 
         {/*<DataItem*/}
         {/*  icon="User"*/}
@@ -255,17 +262,6 @@ export const Details = observer<{ showTotal?: boolean; children?: any }>(
                 <AssetRow label="Burn" value="">
                   <Price
                     value={0.0067219}
-                    isEth={false}
-                    boxProps={{ pad: {} }}
-                    network={exchange.network}
-                  />
-                </AssetRow>
-                <AssetRow
-                  label={NETWORK_NAME[exchange.network] + ' gas'}
-                  value=""
-                >
-                  <Price
-                    value={Number(exchange.depositAmount.toFixed(2))}
                     isEth={false}
                     boxProps={{ pad: {} }}
                     network={exchange.network}
