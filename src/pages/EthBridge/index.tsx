@@ -151,8 +151,8 @@ export const EthBridge = observer((props: any) => {
         >
           <Box
             direction="column"
-            align="center"
-            justify="center"
+            align="start"
+            justify="start"
             className={styles.base}
           >
             {/*<Box*/}
@@ -168,6 +168,8 @@ export const EthBridge = observer((props: any) => {
             <Box
               direction="row"
               justify="between"
+              wrap={true}
+              fill={true}
               width="560px"
               margin={{ vertical: 'large' }}
             >
