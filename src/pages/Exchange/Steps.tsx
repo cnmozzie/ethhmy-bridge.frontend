@@ -31,7 +31,7 @@ const StepRow = observer(
     const completed = action.status === STATUS.SUCCESS;
 
     const label =
-      getStepsTitle(action.type, token, exchange.network) || action.type;
+      getStepsTitle(action.type, token, exchange.network, exchange.mode) || action.type;
 
     const textClassName = cn(
       styles.stepRow,

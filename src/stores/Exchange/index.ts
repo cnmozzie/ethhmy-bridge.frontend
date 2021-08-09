@@ -599,11 +599,11 @@ export class Exchange extends StoreConstructor {
 
       //console.log(this.operation.ethAddress, this.stores.userMetamask.ethAddress)
 
-      if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
-        if (this.operation.ethAddress !== this.stores.userMetamask.ethAddress) {
-          return;
-        }
-      }
+      // if (this.mode === EXCHANGE_MODE.ETH_TO_ONE) {
+      //   if (this.operation.ethAddress !== this.stores.userMetamask.ethAddress) {
+      //     return;
+      //   }
+      // }
 
       let ethMethods, hmyMethods;
       const exNetwork = getExNetworkMethods();
@@ -931,8 +931,9 @@ export class Exchange extends StoreConstructor {
   @observable allowanceError = '';
 
   @computed get needToApprove() {
-    console.log(this.transaction.amount, Number(this.allowance) / 1e18)
-    return Number(this.transaction.amount) > Number(this.allowance) / 1e18;
+    const allowance = divDecimals(this.allowance, 18);
+    console.log(this.transaction.amount, allowance);
+    return Number(this.transaction.amount) > allowance;
   }
 
   @action.bound

@@ -92,7 +92,8 @@ const init = (config: TConfig, inject: any): INetworkMethods => {
     web3: web3,
     ethManagerContract: ethManagerContract,
     ethManagerAddress: config.contracts.erc20Manager,
-    gasPrice: config.gasPrice
+    gasPrice: config.gasPrice,
+    network: config.network
   });
 
   const ethMethodsHRC20 = new EthMethodsHRC20({

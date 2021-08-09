@@ -57,7 +57,8 @@ const binanceClient: TConfig = {
       link: "0xFEFB4061d5c4F096D29e6ac8e300314b5F00199c",
       linkManager: "0x9EDC8d0Bde1Fc666831Bda1ded5B34A45f9E886C"
     },
-    gasPrice: 20000000000
+    gasPrice: 20000000000,
+    network: 'bsc'
   }
 
   const maticClient: TConfig = {
@@ -68,7 +69,7 @@ const binanceClient: TConfig = {
         //TOKEN.ETH
     ],
     contracts: {
-      erc20Manager: "0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1",  // change this contract address !!!
+      erc20Manager: "0xDC05ED497f43DE362C7fB112FAFaBBD5EE8B48Bd",  // change this contract address !!!
       multisigWallet: "0x310336b9EBc8291f2Fde665145110d2ace555a13",
       hrc20Manager: "0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1", 
       ethManager: "0x792bEC87EB65a59c5051Ee76c19E80D444A3C8e1",
@@ -81,14 +82,56 @@ const binanceClient: TConfig = {
       linkManager: "0x9EDC8d0Bde1Fc666831Bda1ded5B34A45f9E886C"
     },
     gasPrice: 5000000000,
-    //network: 'matic'
+    network: 'matic'
   }
 
-  export const fullConfig: TFullConfig = {
-    ethClient: ethClient,
-    binanceClient: binanceClient,
-    hmyClient: maticClient
-  };
+  const binanceClientMainnet: TConfig = {
+    nodeURL: "https://bsc-dataseed1.binance.org",
+    explorerURL: "https://bscscan.com/",
+    tokens: [
+        TOKEN.ERC20,
+        //TOKEN.ETH
+    ],
+    contracts: {
+      erc20Manager: "0xDC05ED497f43DE362C7fB112FAFaBBD5EE8B48Bd",  // change this contract address !!!
+      multisigWallet: "0x310336b9EBc8291f2Fde665145110d2ace555a13",
+      hrc20Manager: "0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1", 
+      ethManager: "0x792bEC87EB65a59c5051Ee76c19E80D444A3C8e1",
+      nativeTokenHRC20: "0xBEF55684b382BaE72051813a898d17282066c007",
+      tokenManager: "0x24f5301f563809F78e1307e8Fb102b453E6c40c6",
+      erc721Manager: "0x426A61A2127fDD1318Ec0EdCe02474f382FdAd30",
+      busd: "0xa011471158D19854aF08A22839f81321309D4A12",
+      busdManager: "0xCC93449c89e8064124FFe1E9d3A84398b4f90ebd",
+      link: "0xFEFB4061d5c4F096D29e6ac8e300314b5F00199c",
+      linkManager: "0x9EDC8d0Bde1Fc666831Bda1ded5B34A45f9E886C"
+    },
+    gasPrice: 5000000000,
+    network: 'bsc'
+  }
+
+  const maticClientMainnet: TConfig = {
+    nodeURL: "https://rpc-mainnet.maticvigil.com",
+    explorerURL: "https://polygonscan.com/",
+    tokens: [
+        TOKEN.ERC20,
+        //TOKEN.ETH
+    ],
+    contracts: {
+      erc20Manager: "0xDC05ED497f43DE362C7fB112FAFaBBD5EE8B48Bd",  // change this contract address !!!
+      multisigWallet: "0x310336b9EBc8291f2Fde665145110d2ace555a13",
+      hrc20Manager: "0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1", 
+      ethManager: "0x792bEC87EB65a59c5051Ee76c19E80D444A3C8e1",
+      nativeTokenHRC20: "0xBEF55684b382BaE72051813a898d17282066c007",
+      tokenManager: "0x24f5301f563809F78e1307e8Fb102b453E6c40c6",
+      erc721Manager: "0x426A61A2127fDD1318Ec0EdCe02474f382FdAd30",
+      busd: "0xa011471158D19854aF08A22839f81321309D4A12",
+      busdManager: "0xCC93449c89e8064124FFe1E9d3A84398b4f90ebd",
+      link: "0xFEFB4061d5c4F096D29e6ac8e300314b5F00199c",
+      linkManager: "0x9EDC8d0Bde1Fc666831Bda1ded5B34A45f9E886C"
+    },
+    gasPrice: 5000000000,
+    network: 'matic'
+  }
 
   const busdInfo: ITokenInfo = {
     name: "Binance USD",
@@ -116,6 +159,19 @@ const binanceClient: TConfig = {
     totalLockedUSD: "1716.2539762368"
   }
 
+  const lowbInfoMainnet: ITokenInfo = {
+    name: "loser coin",
+    symbol: "lowb",
+    decimals: "18",
+    erc20Address: "0x843d4a358471547f51534e3e51fae91cb4dc3f28",
+    hrc20Address: "0x1c0a798b5a5273a9e54028eb1524fd337b24145f",
+    token: TOKEN.ERC20,
+    network: NETWORK_TYPE.BINANCE,
+    totalSupply: "1716082368000000000204",
+    totalLockedNormal: "1716.082368000000000204",
+    totalLockedUSD: "1716.2539762368"
+  }
+
   const testNFTInfo: ITokenInfo = {
     name: "Test NFT",
     symbol: "TestNFT",
@@ -128,12 +184,6 @@ const binanceClient: TConfig = {
     totalLockedNormal: "0",
     totalLockedUSD: "0"
   }
-
-  export const allTokenData: ITokenInfo[] = [
-    busdInfo,
-    lowbInfo,
-    testNFTInfo
-  ];
 
   const getAddressWaiting: IAction = {
     id: "0135822a-46c2c508-3233267a-3ca69954",
@@ -195,24 +245,69 @@ const binanceClient: TConfig = {
   }
 
 
+  // export const fullConfig: TFullConfig = {
+  //   ethClient: ethClient,
+  //   binanceClient: binanceClient,
+  //   hmyClient: maticClient
+  // };
+
+  // export const allTokenData: ITokenInfo[] = [
+  //   busdInfo,
+  //   lowbInfo,
+  //   testNFTInfo
+  // ];
+
+  // export const baseOperaion: IOperation = {
+  //   id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
+  //   type: EXCHANGE_MODE.ETH_TO_ONE,
+  //   erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
+  //   hrc20Address: "0x498c9f1D43F34eB68FBd19B6a0544f1AAae649c0",
+  //   token: TOKEN.ERC20,
+  //   network: NETWORK_TYPE.BINANCE,
+  //   status: STATUS.IN_PROGRESS,
+  //   amount: 1000,
+  //   ethAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
+  //   oneAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
+  //   timestamp: null,
+  //   fee: null,
+  //   actions: [getAddressWaiting, approveEthWaiting, lockWaiting, waitBlockWaiting, mintWaiting]
+  // }
+
+  // export const adminAddress = '0xD35a860B6fDB386Ae9d83D72209DAA704631CA15'
+  // export const maticBridgeAddress = '0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1'
+  // export const maticLowbAddress = '0x5cd4d2f947ae4568a8bd0905dbf12d3454d197f3'
+  // export const maticClientExplorerURL = "https://explorer-mumbai.maticvigil.com/"
+
+
+  export const fullConfig: TFullConfig = {
+    ethClient: ethClient,
+    binanceClient: binanceClientMainnet,
+    hmyClient: maticClientMainnet
+  };
+
+  export const allTokenData: ITokenInfo[] = [
+    busdInfo,
+    lowbInfoMainnet,
+    testNFTInfo
+  ];
 
   export const baseOperaion: IOperation = {
     id: "cdc5656f-25415aff-a0a1316a-a0eb65c1",
     type: EXCHANGE_MODE.ETH_TO_ONE,
-    erc20Address: "0x5aa1a18432aa60bad7f3057d71d3774f56cd34b8",
-    hrc20Address: "0x498c9f1D43F34eB68FBd19B6a0544f1AAae649c0",
+    erc20Address: "0x843d4a358471547f51534e3e51fae91cb4dc3f28",
+    hrc20Address: "0x1c0a798b5a5273a9e54028eb1524fd337b24145f",
     token: TOKEN.ERC20,
     network: NETWORK_TYPE.BINANCE,
     status: STATUS.IN_PROGRESS,
-    amount: 1000,
-    ethAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
-    oneAddress: "0xd35a860b6fdb386ae9d83d72209daa704631ca15",
+    amount: 10000,
+    ethAddress: "0x6Bf8a9Af2CA25D593A17255694b798eB97f0F5c7",
+    oneAddress: "0x6Bf8a9Af2CA25D593A17255694b798eB97f0F5c7",
     timestamp: null,
     fee: null,
     actions: [getAddressWaiting, approveEthWaiting, lockWaiting, waitBlockWaiting, mintWaiting]
   }
 
-  export const adminAddress = '0xD35a860B6fDB386Ae9d83D72209DAA704631CA15'
-  export const maticBridgeAddress = '0x9867Ac5A9155BF75715ebb205ef7cBc1C0a412A1'
-  export const maticLowbAddress = '0x5cd4d2f947ae4568a8bd0905dbf12d3454d197f3'
-  export const maticClientExplorerURL = "https://explorer-mumbai.maticvigil.com/"
+  export const adminAddress = '0x6Bf8a9Af2CA25D593A17255694b798eB97f0F5c7'
+  export const maticBridgeAddress = '0xDC05ED497f43DE362C7fB112FAFaBBD5EE8B48Bd'
+  export const maticLowbAddress = '0x1c0a798b5a5273a9e54028eb1524fd337b24145f'
+  export const maticClientExplorerURL = "https://polygonscan.com/"

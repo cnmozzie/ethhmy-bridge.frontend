@@ -37,6 +37,7 @@ export type TConfig = {
   };
   gasPrice?: number;
   gasLimit?: number;
+  network? : string;
 };
 
 export type TFullConfig = {

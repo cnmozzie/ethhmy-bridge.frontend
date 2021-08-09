@@ -3,7 +3,6 @@ import { getAddress } from '@harmony-js/crypto';
 import Web3 from 'web3';
 import { mulDecimals } from '../../utils';
 import { getGasPrice, getMaticGasPrice } from './helpers';
-import { maticBridgeAddress } from '../../stores/config';
 const BN = require('bn.js');
 
 export interface IEthMethodsInitParams {
@@ -11,6 +10,7 @@ export interface IEthMethodsInitParams {
   ethManagerContract: Contract;
   ethManagerAddress: string;
   gasPrice?: number;
+  network? : string;
 }
 
 export class EthMethodsERC20 {
@@ -18,12 +18,14 @@ export class EthMethodsERC20 {
   private ethManagerContract: Contract;
   private ethManagerAddress: string;
   gasPrice?: number;
+  network? : string;
 
   constructor(params: IEthMethodsInitParams) {
     this.web3 = params.web3;
     this.ethManagerContract = params.ethManagerContract;
     this.ethManagerAddress = params.ethManagerAddress;
     this.gasPrice = params.gasPrice;
+    this.network = params.network;
   }
 
   approveEthManger = async (
@@ -46,7 +48,7 @@ export class EthMethodsERC20 {
       erc20Address,
     );
 
-    if (this.ethManagerAddress == maticBridgeAddress) {
+    if (this.network == 'matic') {
       this.gasPrice = await getMaticGasPrice()
       console.log(this.gasPrice)
     }
@@ -136,7 +138,7 @@ export class EthMethodsERC20 {
       Number(process.env.ETH_GAS_LIMIT),
     );
 
-    if (this.ethManagerAddress == maticBridgeAddress) {
+    if (this.network == 'matic') {
       this.gasPrice = await getMaticGasPrice()
       console.log(this.gasPrice)
     }
